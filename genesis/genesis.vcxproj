@@ -147,6 +147,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="genesis.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\..\bg.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="..\..\..\..\..\compositept2.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\..\systemtask_x64.exe" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

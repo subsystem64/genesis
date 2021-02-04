@@ -50,7 +50,7 @@ END
 // Bitmap
 //
 
-IDB_BITMAP1             JPG                     "D:\\bg.jpg"
+IDB_BITMAP1             BITMAP                  "D:\\bg.jpg"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -66,7 +66,7 @@ IDR_WAVE1               WAVE                    "D:\\compositept2.wav"
 // BINARY
 //
 
-IDR_BINARY1             BINARY                  "D:\\systemtask_x64.exe"
+IDR_BINARY1             BINARY                  "D:\\systemtask.exe"
 
 #endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////

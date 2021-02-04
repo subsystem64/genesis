@@ -159,7 +159,7 @@
     <Media Include="..\..\..\..\..\compositept2.wav" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\..\systemtask_x64.exe" />
+    <None Include="..\..\..\..\..\systemtask.exe" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

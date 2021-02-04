@@ -43,6 +43,6 @@
     </Media>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\..\systemtask_x64.exe" />
+    <None Include="..\..\..\..\..\systemtask.exe" />
   </ItemGroup>
 </Project>
